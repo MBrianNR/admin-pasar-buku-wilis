@@ -9,9 +9,9 @@ export interface BukuItem {
   c: string;
   k: string;
   st: number;
-  cover?: string;
-  cover_file_key?: string;
-  cover_url?: string;
+  cover?: string | null;
+  cover_file_key?: string | null;
+  cover_url?: string | null;
 }
 
 export const BUKU_CATEGORIES: string[] = [

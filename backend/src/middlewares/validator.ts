@@ -212,6 +212,24 @@ const checkBuku = (req: Request, res: Response, next: NextFunction, partial: boo
         clean.stok = 0;
     }
 
+    if (has(b, 'cover_url')) {
+        if (b.cover_url !== null && (typeof b.cover_url !== 'string' || b.cover_url.length > 2048 || !/^https:\/\//i.test(b.cover_url))) {
+            fail(res, 'URL sampul harus berupa URL HTTPS yang valid.');
+            return;
+        }
+        clean.cover_url = b.cover_url;
+    }
+
+    if (has(b, 'cover_file_key')) {
+        const key = b.cover_file_key;
+        const userId = String(res.locals.userId || '');
+        if (key !== null && (typeof key !== 'string' || key.length > 500 || !key.startsWith(`uploads/${userId}/`) || key.split('/').includes('..'))) {
+            fail(res, 'Kunci file sampul tidak valid atau bukan milik akun ini.');
+            return;
+        }
+        clean.cover_file_key = key;
+    }
+
     if (partial && Object.keys(clean).length === 0) {
         fail(res, 'Tidak ada data yang dikirim untuk diubah!');
         return;

@@ -2,7 +2,6 @@
 
 import React, { useState, useRef, ChangeEvent, DragEvent, useEffect } from 'react';
 import { useDirectUpload } from '@/hooks/useDirectUpload';
-import { getToken } from '@/lib/auth';
 
 export interface CloudFileUploadProps {
   label?: string;
@@ -154,16 +153,8 @@ export default function CloudFileUpload({
     e.stopPropagation();
     if (isUploading) abortUpload();
 
-    // Hapus file dari Vercel Blob untuk mencegah orphaned files.
-    const keyToDelete = currentKey || fileKey;
-    if (keyToDelete && keyToDelete.startsWith('uploads/')) {
-      fetch(`/api/upload/delete?fileKey=${encodeURIComponent(keyToDelete)}`, {
-        method: 'DELETE',
-        headers: { Authorization: `Bearer ${getToken() || ''}` },
-      })
-        .catch((err) => console.warn('[Storage] Gagal hapus file lama:', err));
-    }
-
+    // Blob dihapus setelah perubahan buku tersimpan di API. Menghapus di sini
+    // bisa membuat cover buku lama hilang saat pengguna membatalkan modal edit.
     setFileName('');
     setFileSize(null);
     setDisplayUrl(null);

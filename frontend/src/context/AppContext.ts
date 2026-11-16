@@ -49,7 +49,7 @@ export interface AppContextValue {
   approveKios: (id: string) => void;
   saveKios: (values: any, editId?: string) => void;
   deleteKios: (id: string) => void;
-  saveBuku: (values: any, editId?: number | string) => void;
+  saveBuku: (values: any, editId?: number | string) => Promise<void>;
   deleteBuku: (id: number | string) => void;
   updateDenah: () => void;
   openProfileCatalog: (id: string) => void;

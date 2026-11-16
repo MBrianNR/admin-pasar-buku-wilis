@@ -11,6 +11,7 @@ import Header from '@/components/common/Header';
 import Footer from '@/components/common/Footer';
 import ModalRoot from '@/components/common/ModalRoot';
 import { AppState, BukuItem, KiosItem, PengaturanItem } from '@/types';
+import { bukuService } from '@/services/bukuService';
 
 // "/toko" -> "toko" (URL yang tidak dikenal dianggap dashboard)
 const routeOf = (pathname: string): string => {
@@ -53,6 +54,19 @@ export default function AppProvider({ children }: AppProviderProps) {
     setData(loadState());
     setReady(true);
   }, [router]);
+
+  // Katalog buku dari MySQL adalah sumber data utama; localStorage tetap dipakai
+  // sebagai cache/fallback untuk bagian portal yang belum dipindahkan ke API.
+  useEffect(() => {
+    if (!ready) return;
+    let active = true;
+    bukuService.getAll().then(buku => {
+      if (active) setData(current => ({ ...current, buku }));
+    }).catch(error => {
+      console.warn('[Katalog] Gagal memuat buku dari backend; memakai cache lokal.', error);
+    });
+    return () => { active = false; };
+  }, [ready]);
 
   useEffect(() => {
     if (ready) saveState(data);
@@ -210,23 +224,66 @@ export default function AppProvider({ children }: AppProviderProps) {
     );
 
   // ---- aksi: buku ----
-  const saveBuku = (values: any, editId?: number | string) => {
-    update(d => ({
-      ...d,
-      buku: editId
-        ? d.buku.map(b => (b.id === editId ? { ...b, ...values } : b))
-        : [{ id: Date.now(), ...values }, ...d.buku]
-    }));
-    setModal(null);
-    toast(editId ? 'Buku diperbarui' : 'Buku ditambahkan ke katalog');
+  const saveBuku = async (values: any, editId?: number | string) => {
+    const previous = editId ? data.buku.find(book => String(book.id) === String(editId)) : undefined;
+    try {
+      const saved = editId
+        ? await bukuService.update(editId, values)
+        : await bukuService.create(values);
+      update(d => ({
+        ...d,
+        buku: editId
+          ? d.buku.map(book => (String(book.id) === String(editId) ? saved : book))
+          : [saved, ...d.buku]
+      }));
+      setModal(null);
+      toast(editId ? 'Buku dan data sampul tersimpan di MySQL' : 'Buku ditambahkan ke MySQL');
+
+      // Hapus cover lama hanya sesudah MySQL menyimpan URL/key yang baru.
+      if (previous?.cover_file_key && previous.cover_file_key !== saved.cover_file_key) {
+        void deleteBlob(previous.cover_file_key).catch(error => {
+          console.warn('[Storage] Data buku tersimpan, tetapi cover lama belum terhapus.', error);
+          toast('Buku tersimpan, tetapi cover lama masih tertinggal di Blob.');
+        });
+      }
+    } catch (error) {
+      toast(error instanceof Error ? `Gagal menyimpan buku: ${error.message}` : 'Gagal menyimpan buku ke backend.');
+    }
+  };
+
+  const deleteBlob = async (fileKey: string) => {
+    const token = getToken();
+    if (!token || !fileKey.startsWith('uploads/')) return;
+    const response = await fetch(`/api/upload/delete?fileKey=${encodeURIComponent(fileKey)}`, {
+      method: 'DELETE', headers: { Authorization: `Bearer ${token}` }
+    });
+    if (!response.ok) throw new Error('Cover lama gagal dihapus dari Vercel Blob.');
   };
 
   const deleteBuku = (id: number | string) =>
     confirm(
       'Hapus buku ini dari katalog?',
       () => {
-        update(d => ({ ...d, buku: d.buku.filter(b => b.id !== id) }));
-        toast('Buku dihapus');
+        void (async () => {
+          const book = data.buku.find(item => String(item.id) === String(id));
+          try {
+            await bukuService.delete(id);
+            update(d => ({ ...d, buku: d.buku.filter(item => String(item.id) !== String(id)) }));
+            if (book?.cover_file_key) {
+              try {
+                await deleteBlob(book.cover_file_key);
+                toast('Buku dan cover dihapus');
+              } catch (error) {
+                console.warn('[Storage] Buku sudah terhapus dari MySQL, tetapi cover belum terhapus.', error);
+                toast('Buku terhapus, tetapi cover masih tertinggal di Blob.');
+              }
+            } else {
+              toast('Buku dihapus dari MySQL dan katalog');
+            }
+          } catch (error) {
+            toast(error instanceof Error ? `Gagal menghapus buku: ${error.message}` : 'Gagal menghapus buku.');
+          }
+        })();
       },
       'Ya, Hapus'
     );

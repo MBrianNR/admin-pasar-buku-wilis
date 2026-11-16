@@ -103,8 +103,8 @@ export function BukuFormModal({ buku, onClose }: BukuFormModalProps) {
         c: f.c,
         k: f.k,
         st: Math.max(0, parseInt(String(f.st), 10) || 0),
-        cover: f.cover || undefined,
-        cover_file_key: f.cover_file_key || undefined
+        cover: f.cover || null,
+        cover_file_key: f.cover_file_key || null
       },
       buku ? buku.id : undefined
     );
