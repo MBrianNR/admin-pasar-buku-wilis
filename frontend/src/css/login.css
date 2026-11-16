@@ -1,0 +1,149 @@
+/* Halaman Login Admin (mengikuti desain Login.png) */
+
+.lg {
+  --lg-bg: #f8fafc;
+  --lg-card: #ffffff;
+  --lg-card-border: #f1f5f9;
+  --lg-input-border: #d1d5db;
+  --lg-title: #1e293b;
+  --lg-muted: #64748b;
+  --lg-label: #374151;
+  --lg-text: #1f2937;
+  --lg-accent: #2563eb;
+  --lg-accent-hover: #1d4ed8;
+  --lg-danger: #b91c1c;
+  --lg-danger-bg: #fef2f2;
+  --lg-danger-border: #fecaca;
+
+  flex: 1;
+  display: grid;
+  place-items: center;
+  padding: 24px 16px;
+  background: var(--lg-bg);
+}
+
+.lg-card {
+  width: 100%;
+  max-width: 446px;
+  padding: 32px;
+  background: var(--lg-card);
+  border-radius: 16px;
+  /* garis tipis di luar kartu + bayangan lembut di bawahnya */
+  box-shadow: 0 0 0 1px var(--lg-card-border), 0 20px 25px -5px rgba(0, 0, 0, 0.1),
+    0 8px 10px -6px rgba(0, 0, 0, 0.1);
+}
+
+.lg-card h1 {
+  margin-bottom: 4px;
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 32px;
+  text-align: center;
+  color: var(--lg-title);
+}
+
+.lg-sub {
+  margin-bottom: 24px;
+  font-size: 14px;
+  line-height: 20px;
+  text-align: center;
+  color: var(--lg-muted);
+}
+
+.lg-field {
+  margin-bottom: 20px;
+}
+
+.lg-field label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 20px;
+  color: var(--lg-label);
+}
+
+.lg-field input {
+  width: 100%;
+  height: 50px;
+  padding: 0 16px;
+  font-size: 16px;
+  color: var(--lg-text);
+  background: #fff;
+  border: 1px solid var(--lg-input-border);
+  border-radius: 8px;
+}
+
+.lg-field input:focus {
+  outline: 3px solid rgba(37, 99, 235, 0.18);
+  border-color: var(--lg-accent);
+}
+
+.lg-pass {
+  position: relative;
+}
+
+.lg-pass input {
+  padding-right: 48px;
+}
+
+.lg-eye {
+  position: absolute;
+  top: 50%;
+  right: 6px;
+  width: 38px;
+  height: 38px;
+  display: grid;
+  place-items: center;
+  transform: translateY(-50%);
+  color: var(--lg-muted);
+  background: transparent;
+  border: 0;
+  border-radius: 6px;
+}
+
+.lg-eye:hover {
+  color: var(--lg-title);
+  background: #f1f5f9;
+}
+
+.lg-eye:focus-visible {
+  outline: 3px solid rgba(37, 99, 235, 0.18);
+}
+
+.lg-error {
+  margin: -4px 0 16px;
+  padding: 10px 12px;
+  font-size: 13px;
+  line-height: 18px;
+  color: var(--lg-danger);
+  background: var(--lg-danger-bg);
+  border: 1px solid var(--lg-danger-border);
+  border-radius: 8px;
+}
+
+.lg-submit {
+  width: 100%;
+  height: 48px;
+  margin-top: 8px;
+  font-size: 15px;
+  font-weight: 700;
+  color: #fff;
+  background: var(--lg-accent);
+  border: 0;
+  border-radius: 8px;
+}
+
+.lg-submit:hover:not(:disabled) {
+  background: var(--lg-accent-hover);
+}
+
+.lg-submit:focus-visible {
+  outline: 3px solid rgba(37, 99, 235, 0.3);
+  outline-offset: 2px;
+}
+
+.lg-submit:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
