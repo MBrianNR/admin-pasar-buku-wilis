@@ -99,7 +99,7 @@ export const BukuModel = {
     // Hanya kolom yang dikirim yang diubah
     async update(id: number, data: Partial<BukuInput>): Promise<boolean> {
         const sets: string[] = [];
-        const params: (string | number)[] = [];
+        const params: (string | number | null)[] = [];
 
         if (data.judul !== undefined) { sets.push('judul = ?'); params.push(data.judul); }
         if (data.penulis !== undefined) { sets.push('penulis = ?'); params.push(data.penulis); }
