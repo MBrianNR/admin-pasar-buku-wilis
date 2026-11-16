@@ -3,7 +3,15 @@ import { del } from '@vercel/blob';
 
 const API_URL = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000').replace(/\/+$/, '');
 
+function ensureBackendApiConfigured(): void {
+  const hostname = new URL(API_URL).hostname;
+  if (process.env.VERCEL && (!process.env.NEXT_PUBLIC_API_URL || ['localhost', '127.0.0.1'].includes(hostname))) {
+    throw new Error('NEXT_PUBLIC_API_URL harus berisi URL publik backend Express pada deployment Vercel.');
+  }
+}
+
 async function authenticateAdmin(request: NextRequest): Promise<string | null> {
+  ensureBackendApiConfigured();
   const authorization = request.headers.get('authorization');
   if (!authorization?.startsWith('Bearer ')) return null;
   const response = await fetch(`${API_URL}/api/auth/me`, {
