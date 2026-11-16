@@ -1,6 +1,6 @@
 import { Router } from 'express';
-import { getDenah, perbaruiDenah } from '../controllers/denahController';
-import { verifyToken } from '../middlewares/authMiddleware';
+import { getDenah, perbaruiDenah } from '../controllers/denahController.js';
+import { verifyToken } from '../middlewares/authMiddleware.js';
 
 const router = Router();
 

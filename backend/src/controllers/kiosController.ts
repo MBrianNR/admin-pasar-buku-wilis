@@ -1,8 +1,8 @@
 import type { Request, Response } from 'express';
-import { KiosModel } from '../models/kiosModel';
-import type { KiosFilter, KiosInput } from '../models/kiosModel';
-import { BLOCKS, STATUS_KIOS, STATUS_LABEL } from '../utils/constants';
-import { isDuplicateError, kiosToCsv, parsePagination, queryText, serverError } from '../utils/helpers';
+import { KiosModel } from '../models/kiosModel.js';
+import type { KiosFilter, KiosInput } from '../models/kiosModel.js';
+import { BLOCKS, STATUS_KIOS, STATUS_LABEL } from '../utils/constants.js';
+import { isDuplicateError, kiosToCsv, parsePagination, queryText, serverError } from '../utils/helpers.js';
 
 // Baca ?status=&blok=&q= (nilai "all" = tanpa filter, sama seperti dropdown di frontend)
 const parseFilter = (query: Record<string, unknown>): { filter: KiosFilter; error?: string } => {

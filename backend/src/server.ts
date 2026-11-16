@@ -1,7 +1,7 @@
 // WAJIB paling atas: memuat .env sebelum file lain membaca process.env
 import 'dotenv/config';
-import app from './app';
-import db from './config/db';
+import app from './app.js';
+import db from './config/db.js';
 
 const PORT = Number(process.env.PORT) || 5000;
 

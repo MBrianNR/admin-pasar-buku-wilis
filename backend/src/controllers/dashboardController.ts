@@ -1,9 +1,9 @@
 import type { Request, Response } from 'express';
-import { BukuModel } from '../models/bukuModel';
-import { ForumModel } from '../models/forumModel';
-import { KiosModel } from '../models/kiosModel';
-import { PengaturanModel } from '../models/pengaturanModel';
-import { serverError } from '../utils/helpers';
+import { BukuModel } from '../models/bukuModel.js';
+import { ForumModel } from '../models/forumModel.js';
+import { KiosModel } from '../models/kiosModel.js';
+import { PengaturanModel } from '../models/pengaturanModel.js';
+import { serverError } from '../utils/helpers.js';
 
 // Angka-angka kartu statistik + teks hero di halaman Dashboard
 // (tabel kios di Dashboard memakai GET /api/kios?pendingFirst=true&blok=...)

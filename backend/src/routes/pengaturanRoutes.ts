@@ -1,7 +1,7 @@
 import { Router } from 'express';
-import { getPengaturan, updatePengaturan } from '../controllers/pengaturanController';
-import { verifyToken } from '../middlewares/authMiddleware';
-import { validatePengaturan } from '../middlewares/validator';
+import { getPengaturan, updatePengaturan } from '../controllers/pengaturanController.js';
+import { verifyToken } from '../middlewares/authMiddleware.js';
+import { validatePengaturan } from '../middlewares/validator.js';
 
 const router = Router();
 

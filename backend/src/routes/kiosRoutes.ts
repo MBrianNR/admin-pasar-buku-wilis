@@ -7,9 +7,9 @@ import {
     getKios,
     getKiosById,
     updateKios
-} from '../controllers/kiosController';
-import { verifyToken } from '../middlewares/authMiddleware';
-import { validateKios, validateKiosIdParam, validateUpdateKios } from '../middlewares/validator';
+} from '../controllers/kiosController.js';
+import { verifyToken } from '../middlewares/authMiddleware.js';
+import { validateKios, validateKiosIdParam, validateUpdateKios } from '../middlewares/validator.js';
 
 const router = Router();
 

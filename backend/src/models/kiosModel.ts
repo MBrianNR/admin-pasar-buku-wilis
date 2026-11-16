@@ -1,6 +1,6 @@
 import type { PoolConnection, ResultSetHeader, RowDataPacket } from 'mysql2/promise';
-import db, { withTransaction } from '../config/db';
-import { escapeLike } from '../utils/helpers';
+import db, { withTransaction } from '../config/db.js';
+import { escapeLike } from '../utils/helpers.js';
 
 export type StatusKios = 'buka' | 'pending' | 'tutup';
 

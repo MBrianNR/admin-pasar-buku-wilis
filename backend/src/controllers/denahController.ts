@@ -1,8 +1,8 @@
 import type { Request, Response } from 'express';
-import { KiosModel } from '../models/kiosModel';
-import { PengaturanModel } from '../models/pengaturanModel';
-import { BLOCKS, MAP_LABEL } from '../utils/constants';
-import { queryText, serverError, slotIds, waLink } from '../utils/helpers';
+import { KiosModel } from '../models/kiosModel.js';
+import { PengaturanModel } from '../models/pengaturanModel.js';
+import { BLOCKS, MAP_LABEL } from '../utils/constants.js';
+import { queryText, serverError, slotIds, waLink } from '../utils/helpers.js';
 
 // Tab A menampilkan lorong A-B, tab B menampilkan B-C, tab C hanya C (sama seperti halaman Denah)
 export const getDenah = async (req: Request, res: Response): Promise<void> => {

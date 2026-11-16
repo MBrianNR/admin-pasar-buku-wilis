@@ -1,5 +1,5 @@
 import type { ResultSetHeader, RowDataPacket } from 'mysql2/promise';
-import db from '../config/db';
+import db from '../config/db.js';
 
 export type StatusPost = 'pending' | 'laporan' | 'disetujui' | 'dipertahankan' | 'dihapus';
 

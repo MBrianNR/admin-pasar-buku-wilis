@@ -1,7 +1,7 @@
 import { Router } from 'express';
-import { approvePost, createPost, deletePost, getForum } from '../controllers/forumController';
-import { verifyToken } from '../middlewares/authMiddleware';
-import { validateForum, validateNumericId } from '../middlewares/validator';
+import { approvePost, createPost, deletePost, getForum } from '../controllers/forumController.js';
+import { verifyToken } from '../middlewares/authMiddleware.js';
+import { validateForum, validateNumericId } from '../middlewares/validator.js';
 
 const router = Router();
 

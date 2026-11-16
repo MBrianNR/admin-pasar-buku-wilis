@@ -1,8 +1,8 @@
 import type { Request, Response } from 'express';
-import { ForumModel } from '../models/forumModel';
-import type { PostInput } from '../models/forumModel';
-import { isForumStatus } from '../middlewares/validator';
-import { queryText, serverError } from '../utils/helpers';
+import { ForumModel } from '../models/forumModel.js';
+import type { PostInput } from '../models/forumModel.js';
+import { isForumStatus } from '../middlewares/validator.js';
+import { queryText, serverError } from '../utils/helpers.js';
 
 // Tanpa ?status= : antrean moderasi (pending + laporan). Dengan ?status=disetujui dst. : riwayat.
 export const getForum = async (req: Request, res: Response): Promise<void> => {

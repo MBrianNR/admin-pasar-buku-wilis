@@ -1,6 +1,6 @@
 import type { Request, Response, NextFunction } from 'express';
-import { FORUM_STATUS, SPECIALIZATIONS, STATUS_KIOS } from '../utils/constants';
-import { isEmail, normalizeKiosId } from '../utils/helpers';
+import { FORUM_STATUS, SPECIALIZATIONS, STATUS_KIOS } from '../utils/constants.js';
+import { isEmail, normalizeKiosId } from '../utils/helpers.js';
 
 // Gagal Cepat (Fail Fast): hentikan di sini dan balas 400, controller tidak pernah dijalankan
 const fail = (res: Response, message: string): void => {

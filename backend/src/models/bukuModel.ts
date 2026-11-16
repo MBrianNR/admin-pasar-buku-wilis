@@ -1,6 +1,6 @@
 import type { ResultSetHeader, RowDataPacket } from 'mysql2/promise';
-import db from '../config/db';
-import { escapeLike } from '../utils/helpers';
+import db from '../config/db.js';
+import { escapeLike } from '../utils/helpers.js';
 
 export interface Buku {
     id: number;

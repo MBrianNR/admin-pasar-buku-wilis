@@ -1,7 +1,7 @@
 import { Router } from 'express';
-import { createBuku, deleteBuku, getBuku, getBukuById, updateBuku } from '../controllers/bukuController';
-import { verifyToken } from '../middlewares/authMiddleware';
-import { validateBuku, validateNumericId, validateUpdateBuku } from '../middlewares/validator';
+import { createBuku, deleteBuku, getBuku, getBukuById, updateBuku } from '../controllers/bukuController.js';
+import { verifyToken } from '../middlewares/authMiddleware.js';
+import { validateBuku, validateNumericId, validateUpdateBuku } from '../middlewares/validator.js';
 
 const router = Router();
 

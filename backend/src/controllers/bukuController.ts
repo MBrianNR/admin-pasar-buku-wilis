@@ -1,8 +1,8 @@
 import type { Request, Response } from 'express';
-import { BukuModel } from '../models/bukuModel';
-import type { BukuInput } from '../models/bukuModel';
-import { KiosModel } from '../models/kiosModel';
-import { parsePagination, queryText, serverError } from '../utils/helpers';
+import { BukuModel } from '../models/bukuModel.js';
+import type { BukuInput } from '../models/bukuModel.js';
+import { KiosModel } from '../models/kiosModel.js';
+import { parsePagination, queryText, serverError } from '../utils/helpers.js';
 
 export const getBuku = async (req: Request, res: Response): Promise<void> => {
     const query = req.query as Record<string, unknown>;

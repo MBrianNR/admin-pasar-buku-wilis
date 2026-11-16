@@ -1,7 +1,7 @@
-import { isEmail } from '../utils/isEmail';
-import { KiosItem, KiosStatus } from '../types/kios';
-import { ValidationResult } from './authValidator';
-import { isValidIndoMobile, normalizePhone } from './phoneValidator';
+import { isEmail } from '../utils/isEmail.js';
+import { KiosItem, KiosStatus } from '../types/kios.js';
+import { ValidationResult } from './authValidator.js';
+import { isValidIndoMobile, normalizePhone } from './phoneValidator.js';
 
 export interface KiosInputData {
   n?: string;

@@ -1,11 +1,11 @@
 import { Router } from 'express';
-import authRoutes from './authRoutes';
-import bukuRoutes from './bukuRoutes';
-import dashboardRoutes from './dashboardRoutes';
-import denahRoutes from './denahRoutes';
-import forumRoutes from './forumRoutes';
-import kiosRoutes from './kiosRoutes';
-import pengaturanRoutes from './pengaturanRoutes';
+import authRoutes from './authRoutes.js';
+import bukuRoutes from './bukuRoutes.js';
+import dashboardRoutes from './dashboardRoutes.js';
+import denahRoutes from './denahRoutes.js';
+import forumRoutes from './forumRoutes.js';
+import kiosRoutes from './kiosRoutes.js';
+import pengaturanRoutes from './pengaturanRoutes.js';
 
 // Peta jalan aplikasi: semua rute dipasang di bawah /api (lihat app.ts)
 const router = Router();

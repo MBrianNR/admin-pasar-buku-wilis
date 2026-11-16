@@ -1,6 +1,6 @@
 import type { Request, Response } from 'express';
-import { PengaturanModel } from '../models/pengaturanModel';
-import { serverError } from '../utils/helpers';
+import { PengaturanModel } from '../models/pengaturanModel.js';
+import { serverError } from '../utils/helpers.js';
 
 const notSet = 'Data pengaturan belum ada di database. Import ulang file SQL.';
 

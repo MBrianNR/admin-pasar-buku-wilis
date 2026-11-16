@@ -1,9 +1,9 @@
 import type { Request, Response } from 'express';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import { AdminModel } from '../models/adminModel';
-import type { Admin } from '../models/adminModel';
-import { isDuplicateError, serverError } from '../utils/helpers';
+import { AdminModel } from '../models/adminModel.js';
+import type { Admin } from '../models/adminModel.js';
+import { isDuplicateError, serverError } from '../utils/helpers.js';
 
 const toProfile = (a: Admin) => ({
     id: a.id,
