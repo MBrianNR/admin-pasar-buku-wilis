@@ -50,8 +50,8 @@ export const bukuService = {
     if (params.kiosId) query.set('kiosId', params.kiosId);
     if (params.kategori) query.set('kategori', params.kategori);
     const qs = query.toString();
-    const result = await apiRequest<{ data: ApiBuku[] }>(`/api/buku?${qs ? `${qs}&` : ''}limit=100`);
-    return result.data.map(fromApi);
+    const result = await apiRequest<ApiBuku[]>(`/api/buku?${qs ? `${qs}&` : ''}limit=100`);
+    return result.map(fromApi);
   },
 
   /**
