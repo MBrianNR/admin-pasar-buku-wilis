@@ -19,5 +19,8 @@ export const BUKU_CATEGORIES: string[] = [
   'Novel & Sastra',
   'Buku Langka & Antik',
   'Agama & Kitab',
-  'Komik'
+  'Komik',
+  'Kuliah',
+  'Kamus',
+  'Majalah'
 ];

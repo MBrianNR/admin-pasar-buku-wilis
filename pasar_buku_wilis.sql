@@ -157,7 +157,10 @@ INSERT INTO spesialisasi (id, nama) VALUES
 (2, 'Novel & Sastra'),
 (3, 'Buku Langka & Antik'),
 (4, 'Agama & Kitab'),
-(5, 'Komik');
+(5, 'Komik'),
+(6, 'Kuliah'),
+(7, 'Kamus'),
+(8, 'Majalah');
 
 INSERT INTO kios (id, nama, pemilik, whatsapp, email, status, jumlah_judul, tanggal_daftar) VALUES
 ('A-01', 'Toko Surya',            'Hendra Surya',          '0812-1100-0001', '', 'buka',    1280, '2024-01-12'),

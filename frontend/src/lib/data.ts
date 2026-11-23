@@ -9,7 +9,10 @@ export const SPECIALIZATIONS: string[] = [
   'Novel & Sastra',
   'Buku Langka & Antik',
   'Agama & Kitab',
-  'Komik'
+  'Komik',
+  'Kuliah',
+  'Kamus',
+  'Majalah'
 ];
 
 export interface MenuItem {

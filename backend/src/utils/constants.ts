@@ -5,7 +5,10 @@ export const SPECIALIZATIONS = [
     'Novel & Sastra',
     'Buku Langka & Antik',
     'Agama & Kitab',
-    'Komik'
+    'Komik',
+    'Kuliah',
+    'Kamus',
+    'Majalah'
 ] as const;
 
 export const STATUS_KIOS = ['buka', 'pending', 'tutup'] as const;
