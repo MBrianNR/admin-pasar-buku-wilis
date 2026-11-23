@@ -1,4 +1,5 @@
-import { apiRequest } from './api';
+import { apiRequest, buildQuery } from './api';
+import { toStorageFields, uploadService } from './uploadService';
 import { KiosItem } from '@/types';
 
 export interface KiosQueryParams {
@@ -13,13 +14,14 @@ export const kiosService = {
    * Ambil daftar kios dengan query filter
    */
   async getAll(params: KiosQueryParams = {}): Promise<KiosItem[]> {
-    const query = new URLSearchParams();
-    if (params.status && params.status !== 'all') query.set('status', params.status);
-    if (params.blok && params.blok !== 'all') query.set('blok', params.blok);
-    if (params.q) query.set('q', params.q);
-    if (params.pendingFirst) query.set('pendingFirst', 'true');
-    const qs = query.toString();
-    return apiRequest<KiosItem[]>(`/api/kios${qs ? `?${qs}` : ''}`);
+    const qs = buildQuery({
+      status: params.status && params.status !== 'all' ? params.status : undefined,
+      blok: params.blok && params.blok !== 'all' ? params.blok : undefined,
+      q: params.q?.trim(),
+      // string 'false' tidak boleh dianggap true
+      pendingFirst: params.pendingFirst === true || params.pendingFirst === 'true' ? 'true' : undefined
+    });
+    return apiRequest<KiosItem[]>(`/api/kios${qs}`);
   },
 
   /**
@@ -65,6 +67,15 @@ export const kiosService = {
     return apiRequest<KiosItem>(`/api/kios/${encodeURIComponent(id)}/approve`, {
       method: 'PATCH'
     });
+  },
+
+  /**
+   * Upload foto kios ke cloud storage.
+   * Hasilnya ({ foto_url, foto_file_key }) digabung ke payload create()/update(),
+   * sama seperti cover_url / cover_file_key pada buku.
+   */
+  async uploadFoto(file: File) {
+    const uploaded = await uploadService.uploadImage(file, 'kios');
+    return toStorageFields('foto', uploaded);
   }
 };
-

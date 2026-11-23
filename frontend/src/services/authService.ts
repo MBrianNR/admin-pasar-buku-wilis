@@ -6,10 +6,16 @@ export const authService = {
   /**
    * Kirim kredensial login admin ke backend Express
    */
-  async login(username?: string, password?: string): Promise<AuthSession> {
+  async login(username: string, password: string): Promise<AuthSession> {
+    const cleanUsername = username?.trim();
+    if (!cleanUsername || !password) {
+      throw new Error('Username dan password wajib diisi.');
+    }
+
     const data = await apiRequest<AuthSession>('/api/auth/login', {
       method: 'POST',
-      body: JSON.stringify({ username, password })
+      auth: false,
+      body: JSON.stringify({ username: cleanUsername, password })
     });
     if (data?.token) {
       saveSession(data.token, data.user);
@@ -39,4 +45,3 @@ export const authService = {
     return Boolean(token && !isTokenExpired(token));
   }
 };
-

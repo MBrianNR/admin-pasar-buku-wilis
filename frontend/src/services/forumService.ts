@@ -13,7 +13,7 @@ export const forumService = {
    * Setujui postingan forum
    */
   async approvePost(id: number | string): Promise<ForumPostItem> {
-    return apiRequest<ForumPostItem>(`/api/forum/${id}/approve`, {
+    return apiRequest<ForumPostItem>(`/api/forum/${encodeURIComponent(id)}/approve`, {
       method: 'PATCH'
     });
   },
@@ -22,9 +22,8 @@ export const forumService = {
    * Hapus / tolak postingan forum
    */
   async deletePost(id: number | string): Promise<{ success: boolean; message?: string }> {
-    return apiRequest(`/api/forum/${id}`, {
+    return apiRequest(`/api/forum/${encodeURIComponent(id)}`, {
       method: 'DELETE'
     });
   }
 };
-
