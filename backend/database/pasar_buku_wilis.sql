@@ -98,6 +98,8 @@ CREATE TABLE buku (
     spesialisasi_id TINYINT UNSIGNED NOT NULL,               -- kategori buku
     kios_id         VARCHAR(5)       NOT NULL,
     stok            INT UNSIGNED     NOT NULL DEFAULT 0,
+    cover_url       VARCHAR(2048)    NULL,
+    cover_file_key  VARCHAR(500)     NULL,
     created_at      TIMESTAMP        NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at      TIMESTAMP        NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (id),

@@ -5,7 +5,7 @@ import { validateBuku, validateNumericId, validateUpdateBuku } from '../middlewa
 
 const router = Router();
 
-router.get('/', verifyToken, getBuku);
+router.get('/', getBuku);
 router.get('/:id', verifyToken, validateNumericId, getBukuById);
 router.post('/', verifyToken, validateBuku, createBuku);
 router.put('/:id', verifyToken, validateNumericId, validateUpdateBuku, updateBuku);
