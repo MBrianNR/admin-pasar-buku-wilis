@@ -4,7 +4,7 @@ import React, { useCallback, useEffect, useMemo, useRef, useState, ReactNode } f
 import { usePathname, useRouter } from 'next/navigation';
 import { AppContext, AppContextValue, ModalState } from '@/context/AppContext';
 import { ROUTES, STATUS, loadState, saveState, seed } from '@/lib/data';
-import { kiosToCsv, nowLabel, todayLabel } from '@/lib/utils';
+import { kiosToCsv, nowLabel } from '@/lib/utils';
 import { clearSession, getToken, isTokenExpired } from '@/lib/auth';
 import Sidebar from '@/components/common/Sidebar';
 import Header from '@/components/common/Header';
@@ -12,6 +12,7 @@ import Footer from '@/components/common/Footer';
 import ModalRoot from '@/components/common/ModalRoot';
 import { AppState, BukuItem, KiosItem, PengaturanItem } from '@/types';
 import { bukuService } from '@/services/bukuService';
+import { kiosService } from '@/services/kiosService';
 
 // "/toko" -> "toko" (URL yang tidak dikenal dianggap dashboard)
 const routeOf = (pathname: string): string => {
@@ -64,6 +65,17 @@ export default function AppProvider({ children }: AppProviderProps) {
       if (active) setData(current => ({ ...current, buku }));
     }).catch(error => {
       console.warn('[Katalog] Gagal memuat buku dari backend; memakai cache lokal.', error);
+    });
+    return () => { active = false; };
+  }, [ready]);
+
+  useEffect(() => {
+    if (!ready) return;
+    let active = true;
+    kiosService.getAll().then(kios => {
+      if (active) setData(current => ({ ...current, kios }));
+    }).catch(error => {
+      console.warn('[Kios] Gagal memuat kios dari backend; memakai cache lokal.', error);
     });
     return () => { active = false; };
   }, [ready]);
@@ -197,28 +209,43 @@ export default function AppProvider({ children }: AppProviderProps) {
 
   // ---- aksi: kios ----
   const approveKios = (id: string) => {
-    update(d => ({ ...d, kios: d.kios.map(k => (k.id === id ? { ...k, s: 'buka' } : k)) }));
-    toast('Kios ' + id + ' disetujui dan kini aktif');
+    void kiosService.approve(id).then(saved => {
+      update(d => ({ ...d, kios: d.kios.map(k => (k.id === id ? saved : k)) }));
+      toast('Kios ' + id + ' disetujui dan tersimpan di MySQL');
+    }).catch(error => {
+      toast(error instanceof Error ? `Gagal menyetujui kios: ${error.message}` : 'Gagal menyetujui kios di backend.');
+    });
   };
 
-  const saveKios = (values: any, editId?: string) => {
-    update(d => ({
-      ...d,
-      kios: editId
-        ? d.kios.map(k => (k.id === editId ? { ...k, ...values } : k))
-        : [{ ...values, k: 0, t: todayLabel() }, ...d.kios]
-    }));
-    setSel(values.id);
-    setModal(null);
-    toast(editId ? 'Perubahan kios disimpan' : 'Kios ' + values.id + ' berhasil didaftarkan');
+  const saveKios = async (values: any, editId?: string) => {
+    try {
+      const saved = editId
+        ? await kiosService.update(editId, values)
+        : await kiosService.create(values);
+      update(d => ({
+        ...d,
+        kios: editId
+          ? d.kios.map(k => (k.id === editId ? saved : k))
+          : [saved, ...d.kios]
+      }));
+      setSel(saved.id);
+      setModal(null);
+      toast(editId ? 'Perubahan kios tersimpan di MySQL' : 'Kios ' + saved.id + ' berhasil didaftarkan ke MySQL');
+    } catch (error) {
+      toast(error instanceof Error ? `Gagal menyimpan kios: ${error.message}` : 'Gagal menyimpan kios ke backend.');
+    }
   };
 
   const deleteKios = (id: string) =>
     confirm(
       'Hapus kios ' + id + ' dari direktori?',
       () => {
-        update(d => ({ ...d, kios: d.kios.filter(k => k.id !== id) }));
-        toast('Kios ' + id + ' dihapus');
+        void kiosService.delete(id).then(() => {
+          update(d => ({ ...d, kios: d.kios.filter(k => k.id !== id) }));
+          toast('Kios ' + id + ' dihapus dari MySQL');
+        }).catch(error => {
+          toast(error instanceof Error ? `Gagal menghapus kios: ${error.message}` : 'Gagal menghapus kios dari backend.');
+        });
       },
       'Ya, Hapus'
     );
