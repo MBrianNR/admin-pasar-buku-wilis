@@ -13,7 +13,7 @@ export interface UseAuthReturn {
   loading: boolean;
   error: string;
   setError: (err: string) => void;
-  login: (username?: string, password?: string) => Promise<AuthSession>;
+  login: (username: string, password: string) => Promise<AuthSession>;
   logout: () => void;
 }
 
@@ -39,7 +39,7 @@ export function useAuth(): UseAuthReturn {
     }
   }, []);
 
-  const login = useCallback(async (username?: string, password?: string): Promise<AuthSession> => {
+  const login = useCallback(async (username: string, password: string): Promise<AuthSession> => {
     setLoading(true);
     setError('');
     try {
