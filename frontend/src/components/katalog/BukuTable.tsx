@@ -10,6 +10,7 @@ const COLUMNS: ColumnDefinition[] = [
   { label: 'Kategori' },
   { label: 'Kios' },
   { label: 'Stok' },
+  { label: 'Harga' },
   { label: 'Aksi', right: true }
 ];
 
@@ -53,6 +54,9 @@ export default function BukuTable({ items, kiosName, onEdit, onDelete, per = 5 }
             <span className="tag b">{b.k}</span> {kiosName(b.k)}
           </td>
           <td className="mono">{b.st}</td>
+          <td className="mono">
+            {b.harga && b.harga > 0 ? `Rp ${b.harga.toLocaleString('id-ID')}` : 'Belum diisi'}
+          </td>
           <td className="r">
             <a className="ln" onClick={() => onEdit(b)}>
               Edit
