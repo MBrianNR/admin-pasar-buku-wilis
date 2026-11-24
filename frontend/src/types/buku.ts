@@ -9,6 +9,7 @@ export interface BukuItem {
   c: string;
   k: string;
   st: number;
+  harga?: number;
   cover?: string | null;
   cover_file_key?: string | null;
   cover_url?: string | null;

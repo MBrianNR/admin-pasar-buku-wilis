@@ -60,6 +60,7 @@ export function BukuFormModal({ buku, onClose }: BukuFormModalProps) {
     c: SPECIALIZATIONS[0],
     k: data.kios[0] ? data.kios[0].id : '',
     st: 1,
+    harga: 0,
     cover: ''
   };
 
@@ -69,6 +70,7 @@ export function BukuFormModal({ buku, onClose }: BukuFormModalProps) {
     c: init.c,
     k: init.k,
     st: init.st,
+    harga: String(init.harga ?? ''),
     cover: init.cover || '',
     cover_file_key: (init as BukuItem).cover_file_key || ''
   });
@@ -103,6 +105,7 @@ export function BukuFormModal({ buku, onClose }: BukuFormModalProps) {
         c: f.c,
         k: f.k,
         st: Math.max(0, parseInt(String(f.st), 10) || 0),
+        harga: Number(f.harga),
         cover: f.cover || null,
         cover_file_key: f.cover_file_key || null
       },
@@ -155,6 +158,22 @@ export function BukuFormModal({ buku, onClose }: BukuFormModalProps) {
           onChange={e => set('st', e.target.value)}
           error={errors.st}
         />
+        <div>
+          <label className="lbl fl">Harga Buku *</label>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+            <span style={{ fontWeight: 700 }}>Rp</span>
+            <input
+              type="text"
+              inputMode="numeric"
+              pattern="[0-9]*"
+              value={f.harga}
+              onChange={e => set('harga', e.target.value.replace(/\D/g, ''))}
+              placeholder="Contoh: 25000"
+              style={errors.harga ? { borderColor: 'var(--bad)' } : undefined}
+            />
+          </div>
+          {errors.harga && <small style={{ color: 'var(--bad)', fontSize: 11, display: 'block', marginTop: 2 }}>{errors.harga}</small>}
+        </div>
 
         <div>
           <CloudFileUpload

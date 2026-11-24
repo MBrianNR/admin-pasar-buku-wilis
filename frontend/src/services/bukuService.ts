@@ -14,6 +14,7 @@ interface ApiBuku {
   kategori: string;
   kios_id: string;
   stok: number;
+  harga?: number;
   cover_url?: string | null;
   cover_file_key?: string | null;
 }
@@ -25,6 +26,7 @@ const fromApi = (book: ApiBuku): BukuItem => ({
   c: book.kategori,
   k: book.kios_id,
   st: Number(book.stok),
+  harga: Number(book.harga || 0),
   cover: book.cover_url || undefined,
   cover_url: book.cover_url || undefined,
   cover_file_key: book.cover_file_key || undefined,
@@ -36,6 +38,7 @@ const toApi = (book: Partial<BukuItem>): Record<string, unknown> => ({
   ...(book.c !== undefined ? { kategori: book.c } : {}),
   ...(book.k !== undefined ? { kios_id: book.k } : {}),
   ...(book.st !== undefined ? { stok: book.st } : {}),
+  ...(book.harga !== undefined ? { harga: book.harga } : {}),
   ...(book.cover !== undefined || book.cover_url !== undefined ? { cover_url: book.cover_url ?? book.cover ?? null } : {}),
   ...(book.cover_file_key !== undefined ? { cover_file_key: book.cover_file_key || null } : {}),
 });

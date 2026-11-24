@@ -8,6 +8,7 @@ export interface BukuInputData {
   c?: string;
   k?: string;
   st?: number | string;
+  harga?: number | string;
   cover?: string;
   [key: string]: any;
 }
@@ -56,6 +57,11 @@ export function validateBukuInput(
   const stokNum = Number(data.st);
   if (isNaN(stokNum) || stokNum < 0) {
     errors.st = 'Jumlah stok tidak boleh negatif.';
+  }
+
+  const hargaText = String(data.harga ?? '');
+  if (!/^\d+$/.test(hargaText) || !Number.isSafeInteger(Number(hargaText))) {
+    errors.harga = 'Harga wajib diisi dengan angka bulat.';
   }
 
   const isValid = Object.keys(errors).length === 0;

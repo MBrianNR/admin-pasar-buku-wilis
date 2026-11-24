@@ -212,6 +212,15 @@ const checkBuku = (req: Request, res: Response, next: NextFunction, partial: boo
         clean.stok = 0;
     }
 
+    if (!partial || has(b, 'harga')) {
+        const harga = Number(b.harga);
+        if (b.harga === '' || b.harga === null || !Number.isSafeInteger(harga) || harga < 0) {
+            fail(res, 'Harga harus berupa bilangan bulat 0 atau lebih.');
+            return;
+        }
+        clean.harga = harga;
+    }
+
     if (has(b, 'cover_url')) {
         if (b.cover_url !== null && (typeof b.cover_url !== 'string' || b.cover_url.length > 2048 || !/^https:\/\//i.test(b.cover_url))) {
             fail(res, 'URL sampul harus berupa URL HTTPS yang valid.');

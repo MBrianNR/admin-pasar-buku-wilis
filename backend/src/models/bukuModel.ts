@@ -10,6 +10,7 @@ export interface Buku {
     kios_id: string;
     kios_nama: string;
     stok: number;
+    harga: number;
     cover_url: string | null;
     cover_file_key: string | null;
 }
@@ -20,6 +21,7 @@ export interface BukuInput {
     kategori: string;
     kios_id: string;
     stok: number;
+    harga: number;
     cover_url?: string | null;
     cover_file_key?: string | null;
 }
@@ -27,7 +29,7 @@ export interface BukuInput {
 type BukuRow = Buku & RowDataPacket;
 
 const SELECT_BUKU = `
-    SELECT b.id, b.judul, b.penulis, s.nama AS kategori, b.kios_id, k.nama AS kios_nama, b.stok,
+    SELECT b.id, b.judul, b.penulis, s.nama AS kategori, b.kios_id, k.nama AS kios_nama, b.stok, b.harga,
            b.cover_url, b.cover_file_key
     FROM buku b
     JOIN spesialisasi s ON s.id = b.spesialisasi_id
@@ -43,6 +45,7 @@ const normalize = (r: BukuRow): Buku => ({
     kios_id: r.kios_id,
     kios_nama: r.kios_nama,
     stok: Number(r.stok),
+    harga: Number(r.harga),
     cover_url: r.cover_url || null,
     cover_file_key: r.cover_file_key || null
 });
@@ -89,9 +92,9 @@ export const BukuModel = {
 
     async create(data: BukuInput): Promise<number> {
         const [result] = await db.query<ResultSetHeader>(
-            `INSERT INTO buku (judul, penulis, spesialisasi_id, kios_id, stok, cover_url, cover_file_key)
-             SELECT ?, ?, id, ?, ?, ?, ? FROM spesialisasi WHERE nama = ?`,
-            [data.judul, data.penulis, data.kios_id, data.stok, data.cover_url ?? null, data.cover_file_key ?? null, data.kategori]
+            `INSERT INTO buku (judul, penulis, spesialisasi_id, kios_id, stok, harga, cover_url, cover_file_key)
+             SELECT ?, ?, id, ?, ?, ?, ?, ? FROM spesialisasi WHERE nama = ?`,
+            [data.judul, data.penulis, data.kios_id, data.stok, data.harga, data.cover_url ?? null, data.cover_file_key ?? null, data.kategori]
         );
         return result.insertId;
     },
@@ -109,6 +112,7 @@ export const BukuModel = {
         }
         if (data.kios_id !== undefined) { sets.push('kios_id = ?'); params.push(data.kios_id); }
         if (data.stok !== undefined) { sets.push('stok = ?'); params.push(data.stok); }
+        if (data.harga !== undefined) { sets.push('harga = ?'); params.push(data.harga); }
         if (data.cover_url !== undefined) { sets.push('cover_url = ?'); params.push(data.cover_url); }
         if (data.cover_file_key !== undefined) { sets.push('cover_file_key = ?'); params.push(data.cover_file_key); }
 
