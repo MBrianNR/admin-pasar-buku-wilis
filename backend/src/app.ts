@@ -11,7 +11,17 @@ const app = express();
 const allowedOrigins = (process.env.CORS_ORIGIN || 'http://localhost:3000').split(',').map(o => o.trim());
 
 app.use(requestLogger);
-app.use(cors({ origin: allowedOrigins })); // izinkan frontend (port 3000) memanggil backend (port 5000)
+app.use(cors({
+    origin: (origin, callback) => {
+        const isFlutterWebLocalhost = origin !== undefined &&
+            /^http:\/\/(localhost|127\.0\.0\.1):\d+$/.test(origin);
+        if (!origin || allowedOrigins.includes(origin) || isFlutterWebLocalhost) {
+            callback(null, true);
+            return;
+        }
+        callback(null, false);
+    },
+}));
 app.use(express.json()); // ubah body JSON menjadi objek di req.body
 
 app.get('/', (req, res) => {
